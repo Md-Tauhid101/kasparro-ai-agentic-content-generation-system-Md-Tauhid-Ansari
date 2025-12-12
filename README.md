@@ -1,29 +1,31 @@
 # Kasparro – Agentic Content Generation System
 
-This repository contains a modular, agent-driven pipeline that generates structured product content for D2C brands. The system transforms raw product JSON into:
+This project implements a **multi-agent, LangChain + LangGraph powered content generation system** for D2C skincare brands.  
+The pipeline transforms raw product JSON into structured, SEO-ready JSON outputs:
 
-- **Product Page JSON**
-- **FAQ Page JSON**
-- **Comparison Page JSON**
+- `product_page.json`
+- `faq.json`
+- `comparison_page.json`
 
-using deterministic content blocks, Pydantic models, and a controlled LLM wrapper.
+using:
 
-All in-depth documentation lives in:
+- LangChain LLM chains (parser, Q-generation, FAQ, product page, comparison)  
+- LangGraph workflow orchestration  
+- Pydantic models for strict schema enforcement  
+- Automatic fictional Product B generation for comparison  
 
-```
-docs/projectdocumentation.md
-```
+All required documentation is available in:
 
 ---
 
 ## 🚀 Features
 
-- Modular multi-agent architecture (Parser, FAQ, Product Page, Comparison)
-- Deterministic logic blocks for reliable structure
-- Robust LLM JSON recovery
-- Simple MVP orchestrator (no LangGraph)
-- Clean JSON output for downstream SEO/CMS systems
-- Fully compatible with **uv** package manager
+- True multi-agent architecture using LangChain + LangGraph
+- Structured JSON enforced with Pydantic models
+- Automatic creation of fictional **Product B** for competitive comparison
+- Deterministic + LLM-driven hybrid system
+- Clean modular folder structure
+- Fully compatible with the **uv** package manager
 
 ---
 
@@ -124,13 +126,12 @@ uv run python src/main.py src/sample_input.json
 Or without uv’s wrapper (if environment is activated):
 
 ```bash
-python src/main.py src/sample_input.json
+python src/main.py -i src/sample_input.json
 ```
 
 Outputs will appear in:
 
 ```
-output/
   faq.json
   product_page.json
   comparison_page.json

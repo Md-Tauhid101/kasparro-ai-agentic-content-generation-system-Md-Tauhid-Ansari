@@ -11,3 +11,7 @@ wheels/
 
 output/
 .env
+
+comparison_page.json
+faq.json
+product_page.json

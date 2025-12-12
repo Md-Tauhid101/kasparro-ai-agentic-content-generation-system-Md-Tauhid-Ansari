@@ -1,35 +1,40 @@
+import argparse
 import json
-import sys
-from orchestrator import Orchestrator
+from orchestrator import run_pipeline
 from utils import save_json
 
 
-def load_input(path: str):
-    """Load product input JSON from file."""
-    with open(path, "r", encoding="utf-8") as f:
-        return json.load(f)
-
-
 def main():
-    if len(sys.argv) < 2:
-        print("Usage: python main.py <input.json>")
-        return
+    parser = argparse.ArgumentParser()
+    parser.add_argument(
+        "--input", "-i",
+        required=True,
+        help="Path to input JSON file with raw product data"
+    )
+    args = parser.parse_args()
 
-    input_file = sys.argv[1]
+    # Load raw input JSON
+    with open(args.input, "r", encoding="utf-8") as f:
+        raw = json.load(f)
 
-    # Step 1 — Load input
-    raw_input = load_input(input_file)
+    # Run agentic pipeline
+    outputs = run_pipeline(raw)
 
-    # Step 2 — Run pipeline
-    orchestrator = Orchestrator()
-    result = orchestrator.run_pipeline(raw_input)
+    # Extract final structured pages
+    faq = outputs.get("faq_page")
+    product_page = outputs.get("product_page")
+    comparison_page = outputs.get("comparison_page")
 
-    # Step 3 — Save output files
-    save_json(result["faq_page"], "output/faq.json")
-    save_json(result["product_page"], "output/product_page.json")
-    save_json(result["comparison_page"], "output/comparison_page.json")
+    # Save each output as JSON
+    save_json(faq, "faq.json")
+    save_json(product_page, "product_page.json")
+    save_json(comparison_page, "comparison_page.json")
 
-    print("Pipeline completed. Output saved to /output folder.")
+    print("\n✅ Pipeline finished.")
+    print("📁 Files saved:")
+    print("   - faq.json")
+    print("   - product_page.json")
+    print("   - comparison_page.json\n")
 
 
 if __name__ == "__main__":
